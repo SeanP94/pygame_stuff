@@ -1,5 +1,7 @@
 {
     "width" : 800,
-    "height" : 400,
-    "game_name" : "war game 40000"
+    "height" : 4161,
+    "game_name" : "war game 40000",
+    "fps_target" : 60,
+    "grid_cell_size" : 32
 }
