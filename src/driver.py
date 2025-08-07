@@ -20,9 +20,9 @@ text_surface = gamefont.render('Score : 0', False, 'Black')
 
 def event_loop():
     for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit() # X button
-                    exit()
+        if event.type == pygame.QUIT:
+            pygame.quit() # X button
+            exit()
 
 def draw():
     # Draw BG
@@ -45,7 +45,7 @@ def game_loop():
 
 
 
-# if __name__ == '__main__':
-#     game_loop()
+if __name__ == '__main__':
+    game_loop()
 
 
