@@ -1,5 +1,5 @@
-from pg_engine import game_loop
-
+from pg_engine import Engine
 
 if __name__ == '__main__':
-    game_loop()
+    game_engine = Engine()
+    game_engine.run()
