@@ -11,7 +11,11 @@ class UserInput:
             self.user_dict = json.load(fn)
         
         self.log()
-        
+    
+    def refresh(self):
+        with open(self.json_fn, 'r') as fn:
+            self.user_dict = json.load(fn)
+
     def get_uinp(self) -> dict:
         return self.user_dict.copy()
     
