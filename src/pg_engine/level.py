@@ -1,15 +1,18 @@
 import pygame
 from user_input_data import uinp
 from .tile import Tile
+from .player import Player
+from .camera import YSortCameraGroup
 
-pygame.init()
 
 class Level:
     def __init__(self):
         # Get the display surface.
         self.display_surface = pygame.display.get_surface()
 
-        self.visible_sprites = pygame.sprite.Group()
+        # Camera group to draw.
+        self.visible_sprites = YSortCameraGroup()
+        # Map obstacles
         self.obstacle_sprites = pygame.sprite.Group()
 
         self.create_map()
@@ -25,7 +28,9 @@ class Level:
                 if cell == 'x':
                     Tile((x,y), [self.visible_sprites, self.obstacle_sprites], ['test', 'rock.png'])
                 elif cell == 'p':
-                    Tile((x,y), [self.visible_sprites], ['test', 'player.png'])
+                    self.player = Player((x,y), [self.visible_sprites], self.obstacle_sprites)
 
     def run(self):
-        self.visible_sprites.draw(self.display_surface)
+        # self.visible_sprites.draw(self.display_surface)
+        self.visible_sprites.custom_draw(self.player)
+        self.visible_sprites.update()

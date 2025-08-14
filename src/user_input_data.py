@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 from logger import logger_instance
 
-
 class UserInput:
     def __init__(self):
         self.json_fn = Path(os.path.abspath(__file__)).parent.parent / 'non_statics' / 'uinp.json'
