@@ -28,7 +28,8 @@ class Level:
             'object' : import_csv_layout(['map_Objects.csv'])
         }
         graphics = {
-            'grass' : import_folder(GRAPHICS_DIR / 'Grass')
+            'grass' : import_folder(GRAPHICS_DIR / 'Grass'),
+            'objects' : import_folder(GRAPHICS_DIR / 'Objects')
         }
 
         for style, layout in layouts.items():
@@ -45,8 +46,10 @@ class Level:
                             random_grass_img = choice(graphics['grass'])
                             Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'grass', random_grass_img)
                         if style == 'object':
-                            pass # Create object tile
-                    
+                            print(f'col : {col} ; {int(col)}')
+                            surf = graphics['objects'][int(col)]
+                            Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'object', surf)
+        print(graphics['objects'])
         # for y_index, row in enumerate(uinp['world_map']):
         #     for x_index, cell in enumerate(row):
         #         x = x_index * uinp['grid_cell_size']
