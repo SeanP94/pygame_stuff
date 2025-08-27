@@ -3,8 +3,9 @@ from user_input_data import uinp
 from .tile import Tile
 from .player import Player
 from .camera import YSortCameraGroup
-from .support import import_csv_layout
-
+from .support import import_csv_layout, import_folder
+from .globals import GRAPHICS_DIR
+from random import choice
 
 class Level:
     def __init__(self):
@@ -22,20 +23,29 @@ class Level:
         
         layouts = {
             # Store the bounder of the map
-            'boundary' : import_csv_layout(['map_FloorBlocks.csv'])
+            'boundary' : import_csv_layout(['map_FloorBlocks.csv']),
+            'grass' : import_csv_layout(['map_Grass.csv']),
+            'object' : import_csv_layout(['map_Objects.csv'])
+        }
+        graphics = {
+            'grass' : import_folder(GRAPHICS_DIR / 'Grass')
         }
 
         for style, layout in layouts.items():
             for ridx, row in enumerate(layout):
                 for cidx, col in enumerate(row):
-                    # 
                     if col != '-1':
                         # Pos on mapgrid
                         x = cidx * uinp['grid_cell_size']
                         y = ridx * uinp['grid_cell_size']
                         
                         if style == 'boundary':
-                            Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'invisible')
+                            Tile((x,y), [self.obstacle_sprites], 'invisible')
+                        if style == 'grass':
+                            random_grass_img = choice(graphics['grass'])
+                            Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'grass', random_grass_img)
+                        if style == 'object':
+                            pass # Create object tile
                     
         # for y_index, row in enumerate(uinp['world_map']):
         #     for x_index, cell in enumerate(row):
@@ -45,7 +55,7 @@ class Level:
         #             Tile((x,y), [self.visible_sprites, self.obstacle_sprites], ['test', 'rock.png'])
         #         elif cell == 'p':
         #             self.player = Player((x,y), [self.visible_sprites], self.obstacle_sprites)
-        self.player = Player((1000, 430), [self.visible_sprites], self.obstacle_sprites)
+        self.player = Player((2000, 1430), [self.visible_sprites], self.obstacle_sprites)
 
 
 

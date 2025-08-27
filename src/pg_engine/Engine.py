@@ -3,6 +3,7 @@ from .level import Level
 from user_input_data import uinp
 from .debug import debug
 
+
 class Engine:
     def __init__(self):
         pygame.init()
@@ -11,7 +12,7 @@ class Engine:
         self.clock = pygame.time.Clock()
         self.level = Level()
         
-    def run(self):
+    def run(self, debugCode=False):        
         while 1:
             self.screen.fill('black')
             for event in pygame.event.get():
@@ -22,5 +23,8 @@ class Engine:
             
             
             self.level.run()
+            if debugCode:
+                pygame.quit()
+                sys.exit()
             pygame.display.update()
             self.clock.tick(uinp['fps_target'])
