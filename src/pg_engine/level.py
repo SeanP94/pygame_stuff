@@ -6,6 +6,7 @@ from .camera import YSortCameraGroup
 from .support import import_csv_layout, import_folder
 from .globals import GRAPHICS_DIR
 from random import choice
+from .debug import debug
 
 class Level:
     def __init__(self):
@@ -46,10 +47,8 @@ class Level:
                             random_grass_img = choice(graphics['grass'])
                             Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'grass', random_grass_img)
                         if style == 'object':
-                            print(f'col : {col} ; {int(col)}')
                             surf = graphics['objects'][int(col)]
                             Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'object', surf)
-        print(graphics['objects'])
         # for y_index, row in enumerate(uinp['world_map']):
         #     for x_index, cell in enumerate(row):
         #         x = x_index * uinp['grid_cell_size']
@@ -58,8 +57,7 @@ class Level:
         #             Tile((x,y), [self.visible_sprites, self.obstacle_sprites], ['test', 'rock.png'])
         #         elif cell == 'p':
         #             self.player = Player((x,y), [self.visible_sprites], self.obstacle_sprites)
-        self.player = Player((2000, 1430), [self.visible_sprites], self.obstacle_sprites)
-
+        self.player = Player((2000, 1400), [self.visible_sprites], self.obstacle_sprites)
 
 
 
@@ -67,3 +65,4 @@ class Level:
         # self.visible_sprites.draw(self.display_surface)
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+        debug(self.player.status)
