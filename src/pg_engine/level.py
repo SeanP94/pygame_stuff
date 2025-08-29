@@ -22,9 +22,17 @@ class Level:
 
         self.create_map()
 
+        # Attack logic
+        self.current_attack = None
+
     def create_attack(self):
-        Weapon(self.player, [self.visible_sprites])
+        self.current_attack = Weapon(self.player, [self.visible_sprites])
     
+    def destroy_attack(self):
+        if self.current_attack:
+            self.current_attack.kill()
+        self.current_attack = None
+
     def create_map(self):
         
         layouts = {
@@ -54,15 +62,7 @@ class Level:
                         if style == 'object':
                             surf = graphics['objects'][int(col)]
                             Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'object', surf)
-        # for y_index, row in enumerate(uinp['world_map']):
-        #     for x_index, cell in enumerate(row):
-        #         x = x_index * uinp['grid_cell_size']
-        #         y = y_index * uinp['grid_cell_size']
-        #         if cell == 'x':
-        #             Tile((x,y), [self.visible_sprites, self.obstacle_sprites], ['test', 'rock.png'])
-        #         elif cell == 'p':
-        #             self.player = Player((x,y), [self.visible_sprites], self.obstacle_sprites)
-        self.player = Player((2000, 1400), [self.visible_sprites], self.obstacle_sprites, self.create_attack)
+        self.player = Player((2000, 1400), [self.visible_sprites], self.obstacle_sprites, self.create_attack, self.destroy_attack)
 
 
 
