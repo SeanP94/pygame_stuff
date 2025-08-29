@@ -5,8 +5,10 @@ from .player import Player
 from .camera import YSortCameraGroup
 from .support import import_csv_layout, import_folder
 from .globals import GRAPHICS_DIR
+from .weapon import Weapon
 from random import choice
 from .debug import debug
+
 
 class Level:
     def __init__(self):
@@ -20,6 +22,9 @@ class Level:
 
         self.create_map()
 
+    def create_attack(self):
+        Weapon(self.player, [self.visible_sprites])
+    
     def create_map(self):
         
         layouts = {
@@ -57,7 +62,7 @@ class Level:
         #             Tile((x,y), [self.visible_sprites, self.obstacle_sprites], ['test', 'rock.png'])
         #         elif cell == 'p':
         #             self.player = Player((x,y), [self.visible_sprites], self.obstacle_sprites)
-        self.player = Player((2000, 1400), [self.visible_sprites], self.obstacle_sprites)
+        self.player = Player((2000, 1400), [self.visible_sprites], self.obstacle_sprites, self.create_attack)
 
 
 

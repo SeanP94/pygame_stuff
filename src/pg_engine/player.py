@@ -5,7 +5,7 @@ from .support import import_folder
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, pos,  groups : pygame.sprite.Group, obstacle_sprites : pygame.sprite.Group):
+    def __init__(self, pos,  groups : pygame.sprite.Group, obstacle_sprites : pygame.sprite.Group, create_attack):
         '''
             Parameters:
             pos: position of Player
@@ -39,6 +39,13 @@ class Player(pygame.sprite.Sprite):
 
         # Graphics setup.
         self.import_player_assets()
+
+
+        # Weapon 
+        self.create_attack = create_attack # This is the create_attack function from weapon, passed to us by the level.
+        self.weapon_index = 0 # Weapon type in game default : sword
+        self.weapon = list(uinp['weapon_data'].keys())[self.weapon_index]
+        
 
     def import_player_assets(self):
         '''
@@ -82,6 +89,7 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_SPACE]:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
+                self.create_attack()
                 print('Attack!')
 
             if keys[pygame.K_z]:
