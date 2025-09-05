@@ -8,7 +8,7 @@ from .globals import GRAPHICS_DIR
 from .weapon import Weapon
 from random import choice
 from .debug import debug
-
+from .ui import UI
 
 class Level:
     def __init__(self):
@@ -24,6 +24,9 @@ class Level:
 
         # Attack logic
         self.current_attack = None
+
+        # User Interface
+        self.ui = UI()
 
     def create_attack(self):
         self.current_attack = Weapon(self.player, [self.visible_sprites])
@@ -70,4 +73,5 @@ class Level:
         # self.visible_sprites.draw(self.display_surface)
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        debug(self.player.status)
+        self.ui.display(self.player)
+        # debug(self.player.status)

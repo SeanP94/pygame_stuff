@@ -25,7 +25,6 @@ class Player(pygame.sprite.Sprite):
 
         # User Input
         self.direction = pygame.math.Vector2()
-        self.speed = 5
 
         self.attacking = False
         self.attack_cooldown = 400 # MS
@@ -46,6 +45,15 @@ class Player(pygame.sprite.Sprite):
         self.destroy_attack = destroy_attack
         self.weapon_index = 0 # Weapon type in game default : sword
         self.update_weapon()
+        
+
+        # Stats
+        self.stats = {'health' : 100, 'energy' : 60, 'attack' : 10, 'magic' : 4, 'speed' :6}
+        self.health = self.stats['health']
+        self.energy = self.stats['energy']
+        self.speed = self.stats['speed']
+        
+        self.exp = 100
         
 
     def import_player_assets(self):
