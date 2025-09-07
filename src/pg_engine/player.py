@@ -5,7 +5,7 @@ from .support import import_folder
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, pos,  groups : pygame.sprite.Group, obstacle_sprites : pygame.sprite.Group, create_attack, destroy_attack):
+    def __init__(self, pos,  groups : pygame.sprite.Group, obstacle_sprites : pygame.sprite.Group, create_attack, destroy_attack, create_magic):
         '''
             Parameters:
             pos: position of Player
@@ -44,8 +44,15 @@ class Player(pygame.sprite.Sprite):
         self.create_attack = create_attack # This is the create_attack function from weapon, passed to us by the level.
         self.destroy_attack = destroy_attack
         self.weapon_index = 0 # Weapon type in game default : sword
+        self.can_switch_weapon = True
         self.update_weapon()
         
+        # Magic
+        self.create_magic = create_magic
+        self.magic_index = 0
+        self.magic = list(uinp['magic_data'].keys())[self.magic_index]
+        self.can_switch_magic = True
+        self.magic_switch_time = None
 
         # Stats
         self.stats = {'health' : 100, 'energy' : 60, 'attack' : 10, 'magic' : 4, 'speed' :6}
@@ -104,18 +111,39 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_z]:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
-                print("Spell!")
+                style = list(uinp['magic_data'].keys())[self.magic_index]
+                spell = uinp['magic_data'][style]
+                print(self.magic)
+                self.create_magic(
+                    style=style,
+                    strength=spell['strength'] + self.stats['magic'],
+                    cost=spell['cost']
+                )
             
+
+            if keys[pygame.K_e] and self.can_switch_magic:
+                self.magic_index = (self.magic_index + 1) % len(uinp['magic_data'])
+                self.magic_switch_time = pygame.time.get_ticks()
+                self.update_magic()
+                self.can_switch_magic = False
+
+
             if keys[pygame.K_q] and self.can_switch_weapon:
                 self.weapon_index = (self.weapon_index + 1) % len(uinp['weapon_data'])
+                
                 self.update_weapon()
-                self.weapon_switch_time = pygame.time.get_ticks()
                 self.can_switch_weapon = False
+
+    def update_magic(self):
+        self.magic = list(uinp['magic_data'].keys())[self.magic_index]
+        self.can_switch_magic = False
+        self.magic_switch_time = pygame.time.get_ticks()
+        # self.switch_duration_cooldown = uinp['magic_data'][self.magic]['cooldown']
 
     def update_weapon(self):
         self.weapon = list(uinp['weapon_data'].keys())[self.weapon_index]
-        self.can_switch_weapon = True
-        self.weapon_switch_time = None
+        self.can_switch_weapon = False
+        self.weapon_switch_time = pygame.time.get_ticks()
         self.switch_duration_cooldown = uinp['weapon_data'][self.weapon]['cooldown']
 
 
@@ -185,6 +213,12 @@ class Player(pygame.sprite.Sprite):
             if (current_time - self.weapon_switch_time) >= self.switch_duration_cooldown:
                 self.can_switch_weapon = True
                 self.weapon_switch_time = None
+        
+
+        if not self.can_switch_magic:
+            if (current_time - self.magic_switch_time) >= self.switch_duration_cooldown:
+                self.can_switch_magic = True
+                self.magic_switch_time = None
 
     def animate(self):
         animations = self.animations[self.status]

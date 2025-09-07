@@ -28,6 +28,7 @@ class UI:
 
         # Import weapon data images.
         self.weapon_graphics = [pygame.image.load(GRAPHICS_DIR / x['graphic']).convert_alpha() for x in uinp['weapon_data'].values()]
+        self.magic_graphics = [pygame.image.load(GRAPHICS_DIR / x['graphic']).convert_alpha() for x in uinp['magic_data'].values()]
     
     def show_bar(self, stat, stat_max, bg_rect, color):
         # draw background and outline.
@@ -35,7 +36,7 @@ class UI:
 
         # Ratio the current stat in pixels to create a current stat.
         ratio = stat / stat_max
-        current_width = bg_rect.width * ratio *.8
+        current_width = bg_rect.width * ratio
         current_rect = bg_rect.copy()
         current_rect.width = current_width
 
@@ -72,6 +73,14 @@ class UI:
         weapon_rect = weapon_surf.get_rect(center=bg_rect.center)
 
         self.display_surface.blit(weapon_surf, weapon_rect)
+    
+    def magic_overlay(self, magic_index, has_switched):
+        bg_rect = self.selection_box(80, 635, has_switched) # Equiped weapon
+        
+        weapon_surf = self.magic_graphics[magic_index]
+        weapon_rect = weapon_surf.get_rect(center=bg_rect.center)
+
+        self.display_surface.blit(weapon_surf, weapon_rect)
         
 
     def display(self, player):
@@ -80,4 +89,4 @@ class UI:
         
         self.show_exp(player.exp)
         self.weapon_overlay(player.weapon_index, player.can_switch_weapon)
-        # self.selection_box(80, 635)
+        self.magic_overlay(player.magic_index, player.can_switch_magic)
